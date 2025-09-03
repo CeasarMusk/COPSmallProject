@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Contacts List</title>
+</head>
+<body>
+    <h1>Welcome to the new Contacts List!</h1>
+    <p id="form-title">Enter your information</p>
+    
+    <form id="auth-form">
+        <label for="firstName" id="signup-first-label" style="display: none;">First Name:</label>
+        <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" style="display: none;">
+
+        <label for="lastName" id="signup-last-label" style="display: none;">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" style="display: none;">
+
+        <label for="first">Username:</label>
+        <input type="text" id="first" name="first" placeholder="Enter Username" required>
+
+        <label for="pass">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter Password" required>
+
+        <button type="submit" id="submit-btn">Login</button>
+        <button type="button" class="toggle" onclick="toggleForm()">Don't have an account? Sign up</button>
+    </form>
+
+    <script>
+        let isLogin = true;
+
+        function toggleForm() {
+            isLogin = !isLogin;
+
+            document.getElementById("form-title").textContent = isLogin 
+                ? "Enter your login information"
+                : "Create a new account";
+
+            document.getElementById("signup-first-label").style.display = isLogin ? "none" : "block";
+            document.getElementById("firstName").style.display = isLogin ? "none" : "block";
+            document.getElementById("signup-last-label").style.display = isLogin ? "none" : "block";
+            document.getElementById("lastName").style.display = isLogin ? "none" : "block";
+
+            document.getElementById("submit-btn").textContent = isLogin ? "Login" : "Sign Up";
+
+            document.querySelector(".toggle").textContent = isLogin 
+                ? "Sign up"
+                : "Login";
+        }
+    </script>
+</body>
+</html>
