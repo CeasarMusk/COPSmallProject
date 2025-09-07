@@ -1,4 +1,3 @@
-This is our github, try your best to learn how to use git at a basic level
+Make sure to be using GIT to do pull/pushes. Please dont push to Main, make a branch and do your testing there.
 
-
-I believe none of us have really used git with branches so this'll be fun lol
+We can merge branches and test on a later date
