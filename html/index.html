@@ -8,7 +8,8 @@
     <h1>Welcome to the new Contacts List!</h1>
     <p id="form-title">Enter your information</p>
     
-    <form id="auth-form">
+    <!-- Code for the input boxes -->
+    <form id="auth-form" onsubmit="event.preventDefault(); isLogin ? doLogin() : doRegister();">
         <label for="firstName" id="signup-first-label" style="display: none;">First Name:</label>
         <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" style="display: none;">
 
@@ -22,9 +23,16 @@
         <input type="password" id="password" name="password" placeholder="Enter Password" required>
 
         <button type="submit" id="submit-btn">Login</button>
+
+        <!-- Toggle login/register -->
         <button type="button" class="toggle" onclick="toggleForm()">Don't have an account? Sign up</button>
     </form>
 
+    <!-- Error/Success messages -->
+    <p id="loginResult"></p>
+
+    <!-- Load JS file -->
+    <script src="js/code.js"></script>
     <script>
         let isLogin = true;
 
@@ -43,8 +51,8 @@
             document.getElementById("submit-btn").textContent = isLogin ? "Login" : "Sign Up";
 
             document.querySelector(".toggle").textContent = isLogin 
-                ? "Sign up"
-                : "Login";
+                ? "Don't have an account? Sign up"
+                : "Already have an account? Login";
         }
     </script>
 </body>
