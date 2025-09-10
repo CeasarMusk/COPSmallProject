@@ -44,6 +44,7 @@ function doLogin() {
                 lastName = jsonObject.lastName;
 
                 saveCookie();
+                // EDIT THIS CODE ONCE THE HTML FILE FOR THE ACTUAL PAGE IS GOOD.
                 window.location.href = "contacts.html"; 
             }
         };
