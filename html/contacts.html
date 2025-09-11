@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/contacts.css">
+    <title>Contact Manager</title>
+</head>
+<body>
+
+<h2>Contact Manager</h2>
+
+<form id="contactForm">
+    <input type="text" id="firstName" placeholder="First Name" required>
+    <input type="text" id="lastName" placeholder="Last Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="tel" id="phoneNum" placeholder="Phone Number">
+    <button type="submit">Save Contact</button>
+</form>
+
+
+<form id = "searchContacts">
+    <input type="text" id="search" placeholder="Search contacts">
+    <button type = "button" onclick="searchContacts()">Search</button>
+</form>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody id="contactsTable"></tbody>
+</table>
+</body>
+</html>
