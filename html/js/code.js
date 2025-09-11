@@ -1,4 +1,4 @@
-const urlBase = 'http://somethingsimple.site/LAMPAPI';
+const urlBase = 'http://www.somethingsimple.site/API';
 const extension = 'php';
 
 let userId = 0;
@@ -7,6 +7,7 @@ let lastName = "";
 
 //Login
 function doLogin() {
+    alert("TEST: Login button pressed ");
     userId = 0;
     firstName = "";
     lastName = "";
@@ -44,8 +45,8 @@ function doLogin() {
                 lastName = jsonObject.lastName;
 
                 saveCookie();
-                // EDIT THIS CODE ONCE THE HTML FILE FOR THE ACTUAL PAGE IS GOOD. Temp Test alert
-                <script> alert(“TEST”) </script>
+                // EDIT THIS CODE ONCE THE HTML FILE FOR THE ACTUAL PAGE IS GOOD.
+                alert("TEST: properly could load site");
                 window.location.href = "contacts.html"; 
             }
         };
