@@ -102,17 +102,6 @@ table button:hover {
     margin-right: 10px;
 }
 
-#clearAllButton{
-    background-color: red;
-    color: white;
-}
-
-#clearAllButton:hover{
-    background-color: black;
-}
-
-
-
 #contactForm p{
     color: yellow;
     font-size: 20px;
@@ -125,7 +114,3 @@ table button:hover {
     font-weight: bold;
     margin-bottom: 0px;
 }
-
-
-
-
