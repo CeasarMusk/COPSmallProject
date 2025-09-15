@@ -7,8 +7,11 @@
 <body>
 
 <h2>Contact Manager</h2>
+<button type="button" id="logoutButton" onclick="logOut()">Logout</button>
 
 <form id="contactForm">
+    <!-- For Accessibility -->
+    <p>Please enter your First Name, Last Name, Email and Phone Number below</p>
     <input type="text" id="firstName" placeholder="First Name" required>
     <input type="text" id="lastName" placeholder="Last Name" required>
     <input type="email" id="email" placeholder="Email" required>
@@ -18,8 +21,11 @@
 
 
 <form id = "searchContacts">
+    <!-- For Accessibility -->
+    <p>Search Contacts below</p>
     <input type="text" id="search" placeholder="Search contacts">
-    <button type = "button" onclick="searchContacts()">Search</button>
+    <button type ="button" onclick="searchContacts()">Search</button>
+    <button type ="button" id="clearAllButton" onclick="clearAllContacts()">Clear All</button>
 </form>
 
 
