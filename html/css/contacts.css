@@ -21,7 +21,7 @@ h2, h3 {
 
 input, button {
     padding: 8px;
-    margin: 5px 0;
+    margin: 2px;
     font-size: 14px;
     
 }
@@ -44,7 +44,7 @@ button {
 }
 
 button:hover {
-    background-color: #000000;
+    background-color: black;
 }
 
 
@@ -78,7 +78,7 @@ table button:hover {
 
 #search {
     width: 200px;
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
 
@@ -94,4 +94,38 @@ table button:hover {
 #searchContacts{
     text-align: center;
 }
+
+#logoutButton{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 10px;
+}
+
+#clearAllButton{
+    background-color: red;
+    color: white;
+}
+
+#clearAllButton:hover{
+    background-color: black;
+}
+
+
+
+#contactForm p{
+    color: yellow;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#searchContacts p{
+    color: yellow;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+
+
 
