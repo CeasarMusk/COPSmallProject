@@ -7,7 +7,7 @@
 <body onload="loadContacts()">
 
 <h2>Contact Manager</h2>
-<div id="userName"></div> <!-- shows "Welcome, First Last!" -->
+<div id="userName"></div> 
 <button type="button" id="logoutButton" onclick="doLogout()">Logout</button>
 
 <form id="contactForm" onsubmit="event.preventDefault(); addContact();">
@@ -19,7 +19,7 @@
     <button type="submit">Save Contact</button>
 </form>
 
-<form id="searchContacts" onsubmit="event.preventDefault(); searchContacts();">
+<form id="searchContacts">
     <p>Search Contacts below</p>
     <input type="text" id="search" placeholder="Search contacts">
     <button type="button" onclick="searchContacts()">Search</button>
