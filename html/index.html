@@ -8,7 +8,7 @@
     <h1>Welcome to the new Contacts List!</h1>
     <p id="form-title">Enter your information</p>
     
-    <!-- Code for the input boxes -->
+    
     <form id="auth-form" onsubmit="event.preventDefault(); isLogin ? doLogin() : doRegister();">
         <label for="firstName" id="signup-first-label" style="display: none;">First Name:</label>
         <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" style="display: none;">
@@ -24,14 +24,14 @@
 
         <button type="submit" id="submit-btn">Login</button>
 
-        <!-- Toggle login/register -->
+        
         <button type="button" class="toggle" onclick="toggleForm()">Don't have an account? Sign up</button>
     </form>
 
-    <!-- Error/Success messages -->
+    
     <p id="loginResult"></p>
 
-    <!-- Load JS file -->
+    
     <script src="js/code.js"></script>
     <script>
         let isLogin = true;
@@ -57,3 +57,4 @@
     </script>
 </body>
 </html>
+

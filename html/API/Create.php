@@ -1,15 +1,15 @@
 <?php
-// Create.php - Clean version
+
 $inData = getRequestInfo();
 
-// Get parameters
+
 $userId = intval($inData["userId"] ?? 0);
 $first = trim($inData["firstName"] ?? "");
 $last = trim($inData["lastName"] ?? "");
 $phone = trim($inData["phone"] ?? "");
 $email = trim($inData["email"] ?? "");
 
-// Validate parameters
+
 if ($userId <= 0 || $first === "" || $last === "" || $email === "") {
     returnWithError("Missing required field(s).");
     exit;
@@ -36,7 +36,7 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 
-// -------- Helpers ----------
+
 function getRequestInfo() {
     return json_decode(file_get_contents('php://input'), true);
 }
@@ -53,4 +53,5 @@ function returnWithError($err) {
 function returnWithInfo($id) {
     sendResultInfoAsJson('{"id":' . $id . ', "error":""}');
 }
+
 ?>
