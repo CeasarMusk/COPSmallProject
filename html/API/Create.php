@@ -1,6 +1,4 @@
 <?php
-// Expecting JSON: 
-// { "userId":9, "firstName":"Alice", "lastName":"Doe", "phone":"407-555-1111", "email":"alice@example.com" }
 
 $inData = getRequestInfo();
 
@@ -37,7 +35,7 @@ $stmt->close();
 $conn->close();
 
 
-// -------- Helpers ----------
+
 function getRequestInfo() {
   return json_decode(file_get_contents('php://input'), true);
 }
@@ -55,3 +53,4 @@ function returnWithInfo($id) {
   sendResultInfoAsJson('{"id":' . intval($id) . ',"error":""}');
 }
 ?>
+
