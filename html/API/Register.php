@@ -1,8 +1,8 @@
 <?php
-  // Register.php
+  
   $inData = getRequestInfo();
 
-  // Expecting: { "firstName":"...", "lastName":"...", "login":"...", "password":"..." }
+  
   $first = trim($inData["firstName"] ?? "");
   $last  = trim($inData["lastName"]  ?? "");
   $login = trim($inData["login"]     ?? "");
@@ -19,10 +19,10 @@
     exit;
   }
 
-  // Full unicode / emoji safe
+  
   $conn->set_charset("utf8mb4");
 
-  // Enforce unique Login
+  
   $check = $conn->prepare("SELECT ID FROM Users WHERE Login=? LIMIT 1");
   $check->bind_param("s", $login);
   $check->execute();
@@ -53,7 +53,7 @@
     returnWithError($err ?: "Insert failed.");
   }
 
-  // ------------ helpers ------------
+  
   function getRequestInfo() {
     return json_decode(file_get_contents('php://input'), true);
   }
@@ -76,4 +76,5 @@
     );
   }
 ?>
+
 
