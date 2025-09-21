@@ -1,5 +1,5 @@
 <?php
-// Read.php 
+
 $inData = getRequestInfo();
 
 error_log("READ.PHP Received: " . print_r($inData, true));
@@ -20,7 +20,7 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Debug: Check if user exists
+
 $userCheck = $conn->prepare("SELECT ID FROM Users WHERE ID = ?");
 $userCheck->bind_param("i", $userId);
 $userCheck->execute();
@@ -51,7 +51,7 @@ while ($row = $result->fetch_assoc()) {
     $contacts[] = $row;
 }
 
-// Debug: Log how many contacts were found
+
 error_log("Found " . count($contacts) . " contacts for user " . $userId);
 
 if (count($contacts) > 0) {
@@ -63,7 +63,7 @@ if (count($contacts) > 0) {
 $stmt->close();
 $conn->close();
 
-// -------- Helpers ----------
+
 function getRequestInfo() {
     return json_decode(file_get_contents('php://input'), true);
 }
@@ -81,3 +81,4 @@ function returnWithInfo($contacts) {
     sendResultInfoAsJson('{"results":' . json_encode($contacts) . ',"error":""}');
 }
 ?>
+
