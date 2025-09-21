@@ -1,5 +1,5 @@
 <?php
-  // UPDATE.php 
+  
   $inData = getRequestInfo();
 
   $userId    = intval($inData["userId"] ?? 0);
@@ -22,7 +22,7 @@
 
   $conn->set_charset("utf8mb4");
 
-  // UPDATE the Contacts row owned by this user
+  
   $stmt = $conn->prepare(
     "UPDATE Contacts 
         SET FirstName = ?, LastName = ?, Email = ?, Phone = ?
@@ -45,7 +45,7 @@
     if ($updated > 0) {
       returnWithInfo($contactId, $first, $last);
     } else {
-      // 0 rows → not found, not owned by user, or no field actually changed
+      
       returnWithError("Contact not found or no changes.");
     }
   } else {
@@ -55,7 +55,7 @@
     returnWithError($err ?: "Update failed.");
   }
 
-  // ------------ helpers ------------
+  
   function getRequestInfo() {
     return json_decode(file_get_contents('php://input'), true);
   }
@@ -78,3 +78,4 @@
     );
   }
 ?>
+
