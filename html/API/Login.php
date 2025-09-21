@@ -9,7 +9,7 @@
 
     $conn = new mysqli("localhost", "API", "!Password123b", "COP4331");
     
-    //Cmmd to avoid user to plugin strange characters
+    
     $conn->set_charset("utf8mb4");
 
 	if( $conn->connect_error )
@@ -60,3 +60,4 @@
 	}
 	
 ?>
+
