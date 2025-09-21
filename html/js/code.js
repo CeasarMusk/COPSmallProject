@@ -4,6 +4,7 @@ const extension = 'php';
 let userId = 0;
 let firstName = "";
 let lastName = "";
+let currentUpdateId = null;
 
 // Login and Register Code
 
@@ -13,7 +14,7 @@ function doLogin() {
     firstName = "";
     lastName = "";
 
-    let login = document.getElementById("first").value;   
+    let login = document.getElementById("first").value;
     let password = document.getElementById("password").value;
 
     if (!validLoginForm(login, password)) {
@@ -21,7 +22,7 @@ function doLogin() {
         return;
     }
 
-    let tmp = { login: login, password: password }; 
+    let tmp = { login: login, password: password };
     let jsonPayload = JSON.stringify(tmp);
 
     let url = urlBase + '/Login.' + extension;
@@ -32,20 +33,24 @@ function doLogin() {
 
     try {
         xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let jsonObject = JSON.parse(xhr.responseText);
-                userId = jsonObject.id;
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    let jsonObject = JSON.parse(xhr.responseText);
+                    userId = jsonObject.id;
 
-                if (userId < 1) {
-                    document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-                    return;
+                    if (userId < 1) {
+                        document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+                        return;
+                    }
+
+                    firstName = jsonObject.firstName;
+                    lastName = jsonObject.lastName;
+
+                    saveCookie();
+                    window.location.href = "contacts.html";
+                } else {
+                    document.getElementById("loginResult").innerHTML = "Login failed. Please try again.";
                 }
-
-                firstName = jsonObject.firstName;
-                lastName = jsonObject.lastName;
-
-                saveCookie();
-                window.location.href = "contacts.html"; 
             }
         };
         xhr.send(jsonPayload);
@@ -56,17 +61,17 @@ function doLogin() {
 
 //Register
 function doRegister() {
-    firstName = document.getElementById("firstName").value;
-    lastName = document.getElementById("lastName").value;
+    let fName = document.getElementById("firstName").value;
+    let lName = document.getElementById("lastName").value;
     let username = document.getElementById("first").value;
     let password = document.getElementById("password").value;
 
-    if (!validSignUpForm(firstName, lastName, username, password)) {
+    if (!validSignUpForm(fName, lName, username, password)) {
         document.getElementById("loginResult").innerHTML = "Invalid signup form fields";
         return;
     }
 
-    let tmp = { firstName: firstName, lastName: lastName, login: username, password: password };
+    let tmp = { firstName: fName, lastName: lName, login: username, password: password };
     let jsonPayload = JSON.stringify(tmp);
 
     let url = urlBase + '/Register.' + extension;
@@ -94,6 +99,8 @@ function doRegister() {
                 document.getElementById("loginResult").innerHTML = "Account created successfully!";
                 saveCookie();
                 window.location.href = "contacts.html";
+            } else {
+                document.getElementById("loginResult").innerHTML = "Registration failed. Please try again.";
             }
         };
         xhr.send(jsonPayload);
@@ -108,41 +115,43 @@ function doLogout() {
     firstName = "";
     lastName = "";
 
-    document.cookie = "firstName= ; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "lastName= ; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "userId= ; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "firstName=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    document.cookie = "lastName=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 
     window.location.href = "index.html";
 }
 
-//Cookies
+//Cookies 
 function saveCookie() {
     let minutes = 20;
     let date = new Date();
     date.setTime(date.getTime() + (minutes * 60 * 1000));
-    document.cookie = "firstName=" + firstName +
-        ",lastName=" + lastName +
-        ",userId=" + userId +
-        ";expires=" + date.toGMTString();
+    
+    // Set each cookie separately
+    document.cookie = `firstName=${encodeURIComponent(firstName)}; expires=${date.toUTCString()}; path=/`;
+    document.cookie = `lastName=${encodeURIComponent(lastName)}; expires=${date.toUTCString()}; path=/`;
+    document.cookie = `userId=${userId}; expires=${date.toUTCString()}; path=/`;
 }
 
 function readCookie() {
     userId = -1;
-    let data = document.cookie;
-    let splits = data.split(",");
-
-    for (let i = 0; i < splits.length; i++) {
-        let thisOne = splits[i].trim();
-        let tokens = thisOne.split("=");
-
-        if (tokens[0] == "firstName") {
-            firstName = tokens[1];
-        }
-        else if (tokens[0] == "lastName") {
-            lastName = tokens[1];
-        }
-        else if (tokens[0] == "userId") {
-            userId = parseInt(tokens[1].trim());
+    firstName = "";
+    lastName = "";
+    
+    // Parse cookies correctly
+    const cookies = document.cookie.split(';');
+    
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        const [name, value] = cookie.split('=');
+        
+        if (name === "firstName") {
+            firstName = decodeURIComponent(value);
+        } else if (name === "lastName") {
+            lastName = decodeURIComponent(value);
+        } else if (name === "userId") {
+            userId = parseInt(value);
         }
     }
 
@@ -167,7 +176,6 @@ function validSignUpForm(fName, lName, user, pass) {
 
 // Contacts Code
 
-// Add Contact
 function addContact() {
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
@@ -175,11 +183,11 @@ function addContact() {
     let phone = document.getElementById("phoneNum").value;
 
     let tmp = {
-        FirstName: firstName,
-        LastName: lastName,
-        Email: email,
-        Phone: phone,
-        UserID: userId 
+        userId: userId,        // Changed to match Create.php parameter name
+        firstName: firstName,  // Changed to match Create.php parameter name
+        lastName: lastName,    // Changed to match Create.php parameter name
+        phone: phone,          // Changed to match Create.php parameter name
+        email: email           // Changed to match Create.php parameter name
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -191,20 +199,28 @@ function addContact() {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            loadContacts(); // refresh the table
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    alert("Error: " + jsonObject.error);
+                } else {
+                    loadContacts();
+                }
+            } else {
+                alert("Failed to add contact. Please try again.");
+            }
         }
     };
 
     xhr.send(jsonPayload);
 
-    // clear form fields
+    // Clear form fields
     document.getElementById("firstName").value = "";
     document.getElementById("lastName").value = "";
     document.getElementById("email").value = "";
     document.getElementById("phoneNum").value = "";
 }
-
 
 // Search Contacts
 function searchContacts() {
@@ -212,7 +228,6 @@ function searchContacts() {
 
     let search = document.getElementById("search").value;
     let tmp = { search: search, userId: userId };
-
     let jsonPayload = JSON.stringify(tmp);
 
     let url = urlBase + '/Read.' + extension;
@@ -222,16 +237,23 @@ function searchContacts() {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            let jsonObject = JSON.parse(xhr.responseText);
-            displayContacts(jsonObject.results);
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    console.error("Error:", jsonObject.error);
+                } else {
+                    displayContacts(jsonObject.results);
+                }
+            } else {
+                console.error("Search failed with status:", this.status);
+            }
         }
     };
     xhr.send(jsonPayload);
 }
 
-
-// Load and display 5 contacts, display the rest via searching
+// Load contacts
 function loadContacts() {
     readCookie();
 
@@ -245,57 +267,72 @@ function loadContacts() {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            let jsonObject = JSON.parse(xhr.responseText);
-
-            let table = document.getElementById("contactsTable");
-            table.innerHTML = ""; // clear old rows
-
-            if (!jsonObject.results || jsonObject.results.length === 0) return;
-
-            // Sort alphabetically
-            jsonObject.results.sort((a, b) => {
-                if (a.lastName.toLowerCase() < b.lastName.toLowerCase()) return -1;
-                if (a.lastName.toLowerCase() > b.lastName.toLowerCase()) return 1;
-                if (a.firstName.toLowerCase() < b.firstName.toLowerCase()) return -1;
-                if (a.firstName.toLowerCase() > b.firstName.toLowerCase()) return 1;
-                return 0;
-            });
-
-            // Only show the first 5
-            let limitedResults = jsonObject.results.slice(0, 5);
-
-            for (let contact of limitedResults) {
-                let row = table.insertRow();
-
-                row.insertCell(0).innerText = contact.firstName;
-                row.insertCell(1).innerText = contact.lastName;
-                row.insertCell(2).innerText = contact.email;
-                row.insertCell(3).innerText = contact.phone;
-
-                // Update button
-                let updateBtn = document.createElement("button");
-                updateBtn.innerText = "Update";
-                updateBtn.onclick = function() { updateContact(contact.ID); };
-                row.insertCell(4).appendChild(updateBtn);
-
-                // Delete button
-                let deleteBtn = document.createElement("button");
-                deleteBtn.innerText = "Delete";
-                deleteBtn.onclick = function() { deleteContact(contact.ID); };
-                row.insertCell(5).appendChild(deleteBtn);
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    console.error("Error:", jsonObject.error);
+                } else {
+                    displayContacts(jsonObject.results);
+                }
+            } else {
+                console.error("Load contacts failed with status:", this.status);
             }
         }
     };
     xhr.send(jsonPayload);
 }
 
+// Display contacts 
+function displayContacts(contacts) {
+    let table = document.getElementById("contactsTable");
+    table.innerHTML = "";
+
+    if (!contacts || contacts.length === 0) {
+        let row = table.insertRow();
+        let cell = row.insertCell(0);
+        cell.colSpan = 6;
+        cell.innerText = "No contacts found";
+        cell.style.textAlign = "center";
+        return;
+    }
+
+    contacts.sort((a, b) => {
+        if (a.LastName.toLowerCase() < b.LastName.toLowerCase()) return -1;
+        if (a.LastName.toLowerCase() > b.LastName.toLowerCase()) return 1;
+        if (a.FirstName.toLowerCase() < b.FirstName.toLowerCase()) return -1;
+        if (a.FirstName.toLowerCase() > b.FirstName.toLowerCase()) return 1;
+        return 0;
+    });
+
+    for (let contact of contacts) {
+        let row = table.insertRow();
+        row.insertCell(0).innerText = contact.FirstName;
+        row.insertCell(1).innerText = contact.LastName;
+        row.insertCell(2).innerText = contact.Email;
+        row.insertCell(3).innerText = contact.Phone;
+
+        let updateBtn = document.createElement("button");
+        updateBtn.innerText = "Update";
+        updateBtn.onclick = function() {
+            setUpdateForm(contact.ID, contact.FirstName, contact.LastName, contact.Email, contact.Phone);
+        };
+        row.insertCell(4).appendChild(updateBtn);
+
+        let deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "Delete";
+        deleteBtn.onclick = function() {
+            deleteContact(contact.ID);
+        };
+        row.insertCell(5).appendChild(deleteBtn);
+    }
+}
 
 // Delete Contact
 function deleteContact(contactId) {
     if (!confirm("Are you sure you want to delete this contact?")) return;
 
-    let tmp = { ID: contactId, UserID: userId };
+    let tmp = { contactId: contactId, userId: userId };
     let jsonPayload = JSON.stringify(tmp);
 
     let url = urlBase + '/Delete.' + extension;
@@ -305,33 +342,52 @@ function deleteContact(contactId) {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            loadContacts();
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    alert(jsonObject.error);
+                } else {
+                    loadContacts();
+                }
+            } else {
+                alert("Delete failed. Please try again.");
+            }
         }
     };
-
     xhr.send(jsonPayload);
 }
 
+// Set the form fields with the selected contact's data
+function setUpdateForm(id, first, last, email, phone) {
+    document.getElementById("firstName").value = first;
+    document.getElementById("lastName").value = last;
+    document.getElementById("email").value = email;
+    document.getElementById("phoneNum").value = phone;
+
+    currentUpdateId = id;
+
+    let saveButton = document.querySelector("#contactForm button[type='submit']");
+    saveButton.textContent = "Update Contact";
+}
 
 // Update Contact
-function updateContact(contactId) {
+function updateContact() {
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
     let email = document.getElementById("email").value;
     let phone = document.getElementById("phoneNum").value;
 
     let tmp = {
-        ID: contactId,
-        FirstName: firstName,
-        LastName: lastName,
-        Email: email,
-        Phone: phone,
-        UserID: userId
+        contactId: currentUpdateId,
+        userId: userId,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone
     };
 
     let jsonPayload = JSON.stringify(tmp);
-
     let url = urlBase + '/UPDATE.' + extension;
 
     let xhr = new XMLHttpRequest();
@@ -339,10 +395,41 @@ function updateContact(contactId) {
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
     xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            loadContacts();
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    alert(jsonObject.error);
+                } else {
+                    // Reset form state
+                    currentUpdateId = null; // <-- Crucial line to reset the state
+                    document.getElementById("firstName").value = "";
+                    document.getElementById("lastName").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("phoneNum").value = "";
+
+                    let saveButton = document.querySelector("#contactForm button[type='submit']");
+                    saveButton.textContent = "Save Contact";
+
+                    loadContacts();
+                }
+            } else {
+                alert("Update failed. Please try again.");
+            }
         }
     };
-
     xhr.send(jsonPayload);
+}
+
+// Debugging helper
+function debugLog(message) {
+    console.log(message);
+}
+
+function handleContactForm() {
+    if (currentUpdateId !== null) {
+        updateContact();
+    } else {
+        addContact();
+    }
 }

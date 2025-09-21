@@ -36,9 +36,7 @@
   }
   $check->close();
 
-  // NOTE: Keeping plain-text to match your current Login.php.
-  // If you later hash, change BOTH this file and Login.php.
-  $stmt = $conn->prepare(
+   $stmt = $conn->prepare(
     "INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?,?,?,?)"
   );
   $stmt->bind_param("ssss", $first, $last, $login, $pass);

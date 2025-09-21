@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="contacts.css">
+    <link rel="stylesheet" href="css/contacts.css">
     <title>Contact Manager</title>
 </head>
 <body onload="loadContacts()">
 
 <h2>Contact Manager</h2>
-<div id="userName"></div> 
+
 <button type="button" id="logoutButton" onclick="doLogout()">Logout</button>
 
-<form id="contactForm" onsubmit="event.preventDefault(); addContact();">
+<form id="contactForm" onsubmit="event.preventDefault(); handleContactForm();">
     <p>Please enter your: First Name (1), Last Name (2), Email (3) and Phone Number (4) below</p>
     <input type="text" id="firstName" placeholder="First Name: John" required>
     <input type="text" id="lastName" placeholder="Last Name: Doe" required>
@@ -39,6 +39,6 @@
     <tbody id="contactsTable"></tbody>
 </table>
 
-<script src="code.js"></script>
+<script src="js/code.js"></script>
 </body>
 </html>
