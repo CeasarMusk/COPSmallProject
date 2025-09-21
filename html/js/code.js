@@ -6,9 +6,9 @@ let firstName = "";
 let lastName = "";
 let currentUpdateId = null;
 
-// Login and Register Code
 
-//Login
+
+
 function doLogin() {
     userId = 0;
     firstName = "";
@@ -59,7 +59,7 @@ function doLogin() {
     }
 }
 
-//Register
+
 function doRegister() {
     let fName = document.getElementById("firstName").value;
     let lName = document.getElementById("lastName").value;
@@ -109,7 +109,7 @@ function doRegister() {
     }
 }
 
-//Logout
+
 function doLogout() {
     userId = 0;
     firstName = "";
@@ -122,13 +122,13 @@ function doLogout() {
     window.location.href = "index.html";
 }
 
-//Cookies 
+
 function saveCookie() {
     let minutes = 20;
     let date = new Date();
     date.setTime(date.getTime() + (minutes * 60 * 1000));
     
-    // Set each cookie separately
+    
     document.cookie = `firstName=${encodeURIComponent(firstName)}; expires=${date.toUTCString()}; path=/`;
     document.cookie = `lastName=${encodeURIComponent(lastName)}; expires=${date.toUTCString()}; path=/`;
     document.cookie = `userId=${userId}; expires=${date.toUTCString()}; path=/`;
@@ -139,7 +139,7 @@ function readCookie() {
     firstName = "";
     lastName = "";
     
-    // Parse cookies correctly
+    
     const cookies = document.cookie.split(';');
     
     for (let i = 0; i < cookies.length; i++) {
@@ -165,7 +165,7 @@ function readCookie() {
     }
 }
 
-//Validation
+
 function validLoginForm(logName, logPass) {
     return !(logName === "" || logPass === "");
 }
@@ -174,7 +174,7 @@ function validSignUpForm(fName, lName, user, pass) {
     return !(fName === "" || lName === "" || user === "" || pass === "");
 }
 
-// Contacts Code
+
 
 function addContact() {
     let firstName = document.getElementById("firstName").value;
@@ -183,11 +183,11 @@ function addContact() {
     let phone = document.getElementById("phoneNum").value;
 
     let tmp = {
-        userId: userId,        // Changed to match Create.php parameter name
-        firstName: firstName,  // Changed to match Create.php parameter name
-        lastName: lastName,    // Changed to match Create.php parameter name
-        phone: phone,          // Changed to match Create.php parameter name
-        email: email           // Changed to match Create.php parameter name
+        userId: userId,        
+        firstName: firstName,  
+        lastName: lastName,    
+        phone: phone,          
+        email: email           
     };
 
     let jsonPayload = JSON.stringify(tmp);
@@ -215,14 +215,14 @@ function addContact() {
 
     xhr.send(jsonPayload);
 
-    // Clear form fields
+    
     document.getElementById("firstName").value = "";
     document.getElementById("lastName").value = "";
     document.getElementById("email").value = "";
     document.getElementById("phoneNum").value = "";
 }
 
-// Search Contacts
+
 function searchContacts() {
     readCookie();
 
@@ -253,7 +253,7 @@ function searchContacts() {
     xhr.send(jsonPayload);
 }
 
-// Load contacts
+
 function loadContacts() {
     readCookie();
 
@@ -283,7 +283,7 @@ function loadContacts() {
     xhr.send(jsonPayload);
 }
 
-// Display contacts 
+
 function displayContacts(contacts) {
     let table = document.getElementById("contactsTable");
     table.innerHTML = "";
@@ -328,7 +328,7 @@ function displayContacts(contacts) {
     }
 }
 
-// Delete Contact
+
 function deleteContact(contactId) {
     if (!confirm("Are you sure you want to delete this contact?")) return;
 
@@ -358,7 +358,7 @@ function deleteContact(contactId) {
     xhr.send(jsonPayload);
 }
 
-// Set the form fields with the selected contact's data
+
 function setUpdateForm(id, first, last, email, phone) {
     document.getElementById("firstName").value = first;
     document.getElementById("lastName").value = last;
@@ -371,7 +371,7 @@ function setUpdateForm(id, first, last, email, phone) {
     saveButton.textContent = "Update Contact";
 }
 
-// Update Contact
+
 function updateContact() {
     let firstName = document.getElementById("firstName").value;
     let lastName = document.getElementById("lastName").value;
@@ -401,8 +401,8 @@ function updateContact() {
                 if (jsonObject.error) {
                     alert(jsonObject.error);
                 } else {
-                    // Reset form state
-                    currentUpdateId = null; // <-- Crucial line to reset the state
+                   
+                    currentUpdateId = null; 
                     document.getElementById("firstName").value = "";
                     document.getElementById("lastName").value = "";
                     document.getElementById("email").value = "";
@@ -421,7 +421,7 @@ function updateContact() {
     xhr.send(jsonPayload);
 }
 
-// Debugging helper
+
 function debugLog(message) {
     console.log(message);
 }
@@ -433,3 +433,4 @@ function handleContactForm() {
         addContact();
     }
 }
+
