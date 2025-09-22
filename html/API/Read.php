@@ -57,7 +57,7 @@ error_log("Found " . count($contacts) . " contacts for user " . $userId);
 if (count($contacts) > 0) {
     returnWithInfo($contacts);
 } else {
-    returnWithError("No contacts found.");
+    returnWithInfo($contacts);
 }
 
 $stmt->close();
