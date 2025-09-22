@@ -7,8 +7,6 @@ let lastName = "";
 let currentUpdateId = null;
 
 
-
-
 function doLogin() {
     userId = 0;
     firstName = "";
@@ -224,9 +222,14 @@ function addContact() {
 
 
 function searchContacts() {
+    let search = document.getElementById("search").value;
+    if (search.trim() === "") {
+        loadContacts();
+        return;
+    }
+
     readCookie();
 
-    let search = document.getElementById("search").value;
     let tmp = { search: search, userId: userId };
     let jsonPayload = JSON.stringify(tmp);
 
