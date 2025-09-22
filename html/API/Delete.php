@@ -1,5 +1,5 @@
 <?php
-// Delete.php
+
 $inData = getRequestInfo();
     
 
@@ -56,4 +56,5 @@ function returnWithError( $err )
     sendResultInfoAsJson( $retValue );
 }
 ?>
+
 
